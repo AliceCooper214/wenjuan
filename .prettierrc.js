@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-undef
 module.exports = {
   // 箭头函数只有一个参数的时候可以忽略括号
   arrowParens: 'avoid',
