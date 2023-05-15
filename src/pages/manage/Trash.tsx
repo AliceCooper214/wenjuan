@@ -1,32 +1,13 @@
 import React, { FC, useState } from 'react'
 import { useTitle } from 'ahooks'
-import { Button, Empty, Space, Tag, Typography, Table, Modal } from 'antd'
+import { Button, Empty, Space, Tag, Typography, Table, Modal, Spin } from 'antd'
 import styles from './common.module.scss'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import ListSearch from '../../components/ListSearch'
+import useLoadQuestionListData from '../../hooks/useLoadQuestionListData'
 
 const { Title } = Typography
 const { confirm } = Modal
-
-const rawQuestionList = [
-  {
-    _id: 'q1',
-    title: '问卷1',
-    isPublished: false,
-    isStar: true,
-    answerCount: 5,
-    createdAt: '3-25',
-  },
-  {
-    _id: 'q3',
-    title: '问卷3',
-    isPublished: false,
-    isStar: true,
-    answerCount: 5,
-    createdAt: '3-25',
-  },
-  { _id: 'q4', title: '问卷4', isPublished: true, isStar: true, answerCount: 6, createdAt: '3-11' },
-]
 
 const Trash: FC = () => {
   useTitle('小慕问卷 - 回收站')
@@ -55,7 +36,8 @@ const Trash: FC = () => {
   ]
 
   const [selectedIds, setSelectedIds] = useState([])
-  const [list, setList] = useState(rawQuestionList)
+  const { data = {}, loading, refresh } = useLoadQuestionListData({ isDeleted: true })
+  const { list = [], total = 0 } = data
 
   function del() {
     confirm({
@@ -108,6 +90,11 @@ const Trash: FC = () => {
         </div>
       </div>
       <div className={styles.content}>
+        {loading && (
+          <div style={{ textAlign: 'center' }}>
+            <Spin />
+          </div>
+        )}
         {list.length === 0 && <Empty description="暂无数据" />}
         {list.length > 0 && TableElem}
       </div>
