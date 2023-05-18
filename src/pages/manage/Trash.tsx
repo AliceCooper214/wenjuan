@@ -1,10 +1,12 @@
 import React, { FC, useState } from 'react'
-import { useTitle } from 'ahooks'
-import { Button, Empty, Space, Tag, Typography, Table, Modal, Spin } from 'antd'
-import styles from './common.module.scss'
+import { useRequest, useTitle } from 'ahooks'
+import { Button, Empty, Space, Tag, Typography, Table, Modal, Spin, message } from 'antd'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
+import styles from './common.module.scss'
 import ListSearch from '../../components/ListSearch'
 import useLoadQuestionListData from '../../hooks/useLoadQuestionListData'
+import ListPage from '../../components/ListPage'
+import { deleteQuestionsService, updateQuestionService } from '../../services/question'
 
 const { Title } = Typography
 const { confirm } = Modal
@@ -12,11 +14,53 @@ const { confirm } = Modal
 const Trash: FC = () => {
   useTitle('小慕问卷 - 回收站')
 
+  const { data = {}, loading, refresh } = useLoadQuestionListData({ isDeleted: true })
+  const { list = [], total = 0 } = data
+
+  const [selectedIds, setSelectedIds] = useState([])
+
+  const { run: recover } = useRequest(
+    async () => {
+      for await (const id of selectedIds) {
+        await updateQuestionService(id, { isDeleted: false })
+      }
+    },
+    {
+      manual: true,
+      debounceWait: 500,
+      onSuccess() {
+        message.success('恢复成功')
+        refresh()
+        setSelectedIds([])
+      },
+    }
+  )
+
+  const { run: deleteQuestion } = useRequest(
+    async () => await deleteQuestionsService(selectedIds),
+    {
+      manual: true,
+      onSuccess() {
+        message.success('删除成功')
+        refresh()
+        setSelectedIds([])
+      },
+    }
+  )
+
+  function del() {
+    confirm({
+      title: '确认彻底删除该问卷？',
+      icon: <ExclamationCircleOutlined />,
+      content: '删除以后不可以找回',
+      onOk: deleteQuestion,
+    })
+  }
+
   const tableColumns = [
     {
       title: '标题',
       dataIndex: 'title',
-      // key: 'title', // 循环列的 key ，它会默认取 dataIndex 的值
     },
     {
       title: '是否发布',
@@ -35,26 +79,11 @@ const Trash: FC = () => {
     },
   ]
 
-  const [selectedIds, setSelectedIds] = useState([])
-  const { data = {}, loading, refresh } = useLoadQuestionListData({ isDeleted: true })
-  const { list = [], total = 0 } = data
-
-  function del() {
-    confirm({
-      title: '确认彻底删除该问卷？',
-      icon: <ExclamationCircleOutlined />,
-      content: '删除以后不可以找回',
-      onOk: () => {
-        alert('')
-      },
-    })
-  }
-
   const TableElem = (
     <>
       <div style={{ marginBottom: '16px' }}>
         <Space>
-          <Button type="primary" disabled={selectedIds.length === 0}>
+          <Button type="primary" disabled={selectedIds.length === 0} onClick={recover}>
             恢复
           </Button>
           <Button danger disabled={selectedIds.length === 0} onClick={del}>
@@ -95,10 +124,12 @@ const Trash: FC = () => {
             <Spin />
           </div>
         )}
-        {list.length === 0 && <Empty description="暂无数据" />}
+        {!loading && list.length === 0 && <Empty description="暂无数据" />}
         {list.length > 0 && TableElem}
       </div>
-      <div className={styles.footer}></div>
+      <div className={styles.footer}>
+        <ListPage total={total} />
+      </div>
     </>
   )
 }

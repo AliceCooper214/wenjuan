@@ -16,8 +16,6 @@ const ListPage: FC<PropsType> = (props: PropsType) => {
 
   useEffect(() => {
     const page = parseInt(searchParams.get(LIST_PAGE_PARAM_KEY) || '') || 1
-    console.log(page)
-
     setCurrent(page)
     const pageSize = parseInt(searchParams.get(LIST_PAGE_SIZE_PARAM_KEY) || '') || LIST_PAGE_SIZE
     setPageSize(pageSize)
