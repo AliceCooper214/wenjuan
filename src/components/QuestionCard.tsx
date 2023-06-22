@@ -35,7 +35,7 @@ const QuestionCard: FC<PropsType> = (props: PropsType) => {
     },
     {
       manual: true,
-      onSuccess(result) {
+      onSuccess() {
         setIsStarState(!isStarState)
         message.success('已更新')
       },

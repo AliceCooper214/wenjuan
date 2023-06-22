@@ -5,7 +5,7 @@ import 'antd/dist/reset.css'
 import './App.css'
 
 function App() {
-  return <RouterProvider router={routerConfig}></RouterProvider>
+  return <RouterProvider router={routerConfig} />
 }
 
 export default App
