@@ -1,5 +1,6 @@
 import { useKeyPress } from 'ahooks'
 import { useDispatch } from 'react-redux'
+import { ActionCreators as UndoActionCreators } from 'redux-undo'
 import {
   copySelectedComponent,
   pasteCopiedComponent,
@@ -12,6 +13,7 @@ function isActiveElementValid() {
   const activeElem = document.activeElement
 
   if (activeElem === document.body) return true
+  if (activeElem?.matches('div[role="button"]')) return true
 
   return false
 }
@@ -42,5 +44,21 @@ export default function useBindCanvasKeyPress() {
   useKeyPress('downarrow', () => {
     if (!isActiveElementValid()) return
     dispatch(selectNextComponent())
+  })
+
+  useKeyPress(
+    ['ctrl.z', 'meta.z'],
+    () => {
+      if (!isActiveElementValid()) return
+      dispatch(UndoActionCreators.undo())
+    },
+    {
+      exactMatch: true,
+    }
+  )
+
+  useKeyPress(['ctrl.shift.z', 'meta.shift.z'], () => {
+    if (!isActiveElementValid()) return
+    dispatch(UndoActionCreators.redo())
   })
 }

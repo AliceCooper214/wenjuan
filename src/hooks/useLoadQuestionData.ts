@@ -4,6 +4,7 @@ import { useRequest } from 'ahooks'
 import { getQuestionService } from '../services/question'
 import { useDispatch } from 'react-redux'
 import { resetComponents } from '../store/componentsReducer'
+import { resetPageInfo } from '../store/pageInfoReducer'
 
 function useLoadQuestionData() {
   const { id = '' } = useParams()
@@ -38,6 +39,8 @@ function useLoadQuestionData() {
     }
 
     dispatch(resetComponents({ componentList, selectedId, copiedComponent: null }))
+
+    dispatch(resetPageInfo({ title, desc, js, css, isPublished }))
   }, [data])
 
   useEffect(() => {
