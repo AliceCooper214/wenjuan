@@ -42,8 +42,8 @@
     "format": " prettier --write 'src/**/*.+(js|ts|jsx|tsx)' ",
     "prepare": "husky install",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
-    "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
     "mock": "cd ./mock && node index.js"
   },
   "eslintConfig": {
@@ -78,9 +78,18 @@
     "@commitlint/cli": "^17.6.1",
     "@commitlint/config-conventional": "^17.6.1",
     "@craco/craco": "^7.1.0",
+    "@storybook/addon-essentials": "7.0.24",
+    "@storybook/addon-interactions": "7.0.24",
+    "@storybook/addon-links": "7.0.24",
+    "@storybook/blocks": "7.0.24",
+    "@storybook/preset-create-react-app": "7.0.24",
+    "@storybook/react": "7.0.24",
+    "@storybook/react-webpack5": "7.0.24",
+    "@storybook/testing-library": "0.0.14-next.2",
     "@types/lodash.clonedeep": "^4.5.7",
     "@typescript-eslint/eslint-plugin": "^5.59.1",
     "@typescript-eslint/parser": "^5.59.1",
+    "babel-plugin-named-exports-order": "0.0.2",
     "eslint": "^8.39.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
@@ -89,6 +98,8 @@
     "prettier": "^2.8.8",
     "prop-types": "^15.8.1",
     "recharts": "^2.7.1",
-    "sass": "^1.62.1"
+    "sass": "^1.62.1",
+    "storybook": "7.0.24",
+    "webpack": "5.88.0"
   }
 }
