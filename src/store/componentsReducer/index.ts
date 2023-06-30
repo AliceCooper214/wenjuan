@@ -1,8 +1,7 @@
 import { PayloadAction, createSlice, nanoid } from '@reduxjs/toolkit'
 import produce from 'immer'
 import cloneDeep from 'lodash.clonedeep'
-// 替代 手写arrayMove
-import { arrayMove } from '@dnd-kit/sortable'
+import { arrayMove } from '../../utils/arrayMove'
 import { getNextSelectedId, insertNewComponent } from './utils'
 import { ComponentPropsType } from '../../components/QuestionComponents'
 
