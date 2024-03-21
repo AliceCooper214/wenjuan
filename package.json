@@ -21,6 +21,7 @@
     "classnames": "^2.3.2",
     "immer": "^9.0.21",
     "lodash.clonedeep": "^4.5.0",
+    "mockjs": "^1.1.0",
     "qrcode.react": "^3.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -43,8 +44,7 @@
     "prepare": "husky install",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
-    "mock": "cd ./mock && node index.js"
+    "build-storybook": "storybook build"
   },
   "eslintConfig": {
     "extends": [

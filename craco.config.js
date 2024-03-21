@@ -35,4 +35,5 @@ module.exports = {
       '/api': 'http://localhost:3001', // Mock
     },
   },
+  setupMiddlewares: require('./src/mock/index.js'),
 }
